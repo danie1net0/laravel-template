@@ -1,2 +1,3 @@
 docker exec laravel-app vendor/bin/pint
+docker exec laravel-app vendor/bin/phpstan analyse
 docker exec laravel-app vendor/bin/pest -p --compact
