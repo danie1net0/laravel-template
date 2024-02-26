@@ -1,0 +1,72 @@
+FROM php:8.3-fpm as app
+
+ENV PATH="./vendor/bin:${PATH}" \
+    NGINX_SERVER_NAME="_" \
+    PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
+    PHP_OPCACHE_MAX_ACCELERATED_FILES="6000" \
+    PHP_OPCACHE_MEMORY_CONSUMPTION="128"
+
+RUN apt update \
+    && apt -y --no-install-recommends install \
+        libpq-dev libzip-dev libpng-dev \
+        procps \
+        unzip \
+        supervisor \
+        nginx \
+        jpegoptim optipng pngquant gifsicle \
+        postgresql-client \
+    && pecl install redis \
+    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+    && docker-php-ext-install sockets pdo pdo_pgsql opcache gd zip exif pcntl \
+    && docker-php-ext-enable redis
+
+COPY .docker/php/php-fpm.d/docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
+COPY .docker/php/conf.d/*.ini /usr/local/etc/php/conf.d/
+COPY .docker/php/php.ini /usr/local/etc/php/php.ini
+
+COPY .docker/nginx/h5bp /etc/nginx/h5bp
+
+COPY .docker/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+COPY .docker/supervisor/conf.d/*.conf /etc/supervisor/conf.d-available/
+
+COPY .docker/run-app.sh /usr/local/bin/run-app
+COPY .docker/php/composer-installer.sh /usr/local/bin/composer-installer
+
+ADD https://github.com/kelseyhightower/confd/releases/download/v0.11.0/confd-0.11.0-linux-amd64 /usr/local/bin/confd
+COPY .docker/confd/conf.d/ /etc/confd/conf.d/
+COPY .docker/confd/templates/ /etc/confd/templates/
+
+RUN chmod +x /usr/local/bin/confd \
+    && chmod +x /usr/local/bin/run-app \
+    && chmod +x /usr/local/bin/composer-installer \
+    && /usr/local/bin/composer-installer \
+    && mv composer.phar /usr/local/bin/composer \
+    && chmod +x /usr/local/bin/composer \
+    && composer --version
+
+# Copy the application
+COPY . /var/www/html
+
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod 775 -R /var/www/html
+
+RUN composer install --no-dev --no-scripts \
+    && cp .env.example .env \
+    && php artisan key:generate
+
+FROM node:lts as build-assets
+
+WORKDIR /app-build
+
+COPY --from=app /var/www/html /app-build
+
+RUN npm install && npm run build
+
+FROM app as app-prod
+
+COPY --from=build-assets /app-build/public /var/www/html/public
+COPY --from=build-assets /app-build/node_modules /var/www/html/node_modules
+
+EXPOSE 80
+
+CMD ["/usr/local/bin/run-app"]
