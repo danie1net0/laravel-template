@@ -62,7 +62,7 @@ services:
       - redis
 
   pgsql:
-    image: postgres:16
+    image: postgres:15
     container_name: laravel-pgsql
     platform: linux/amd64
     ports:
@@ -82,7 +82,7 @@ services:
     container_name: laravel-pgsql-tests
     platform: linux/amd64
     ports:
-      - '${DB_TEST_PORT:-5435}:5432'
+      - '${DB_TEST_PORT:-5433}:5432'
     environment:
       PGPASSWORD: 'laravel_templates_tests'
       POSTGRES_DB: 'laravel_templates_tests'
