@@ -1,22 +1,16 @@
 <?php
 
 return [
-
     'backup' => [
-
         /*
          * The name of this application. You can use this name to monitor
          * the backups.
          */
-        'name' => env('APP_NAME', 'laravel-backup'),
+        'name' => 'backups',
 
         'source' => [
-
             'files' => [
-
-                /*
-                 * The list of directories and files that will be included in the backup.
-                 */
+                // The list of directories and files that will be included in the backup.
                 'include' => [
                     base_path(),
                 ],
@@ -31,14 +25,10 @@ return [
                     base_path('node_modules'),
                 ],
 
-                /*
-                 * Determines if symlinks should be followed.
-                 */
+                // Determines if symlinks should be followed.
                 'follow_links' => false,
 
-                /*
-                 * Determines if it should avoid unreadable folders.
-                 */
+                // Determines if it should avoid unreadable folders.
                 'ignore_unreadable_directories' => false,
 
                 /*
@@ -98,9 +88,7 @@ return [
          */
         'database_dump_compressor' => Spatie\DbDumper\Compressors\GzipCompressor::class,
 
-        /*
-         * If specified, the database dumped file name will contain a timestamp (e.g.: 'Y-m-d-H-i-s').
-         */
+        // If specified, the database dumped file name will contain a timestamp (e.g.: 'Y-m-d-H-i-s').
         'database_dump_file_timestamp_format' => null,
 
         /*
@@ -138,20 +126,14 @@ return [
              */
             'compression_level' => 9,
 
-            /*
-             * The filename prefix used for the backup zip file.
-             */
+            // The filename prefix used for the backup zip file.
             'filename_prefix' => '',
 
-            /*
-             * The disk names on which the backups will be stored.
-             */
+            // The disk names on which the backups will be stored.
             'disks' => explode(',', env('BACKUP_DISK', 'local')),
         ],
 
-        /*
-         * The directory where the temporary files will be stored.
-         */
+        // The directory where the temporary files will be stored.
         'temporary_directory' => storage_path('app/backup-temp'),
 
         /*
@@ -189,21 +171,20 @@ return [
      * the `Spatie\Backup\Notifications\Notifications` classes.
      */
     'notifications' => [
-
         'notifications' => [
-            \Spatie\Backup\Notifications\Notifications\BackupHasFailedNotification::class => ['mail'],
-            \Spatie\Backup\Notifications\Notifications\UnhealthyBackupWasFoundNotification::class => ['mail'],
-            \Spatie\Backup\Notifications\Notifications\CleanupHasFailedNotification::class => ['mail'],
-            \Spatie\Backup\Notifications\Notifications\BackupWasSuccessfulNotification::class => ['mail'],
-            \Spatie\Backup\Notifications\Notifications\HealthyBackupWasFoundNotification::class => ['mail'],
-            \Spatie\Backup\Notifications\Notifications\CleanupWasSuccessfulNotification::class => ['mail'],
+            Spatie\Backup\Notifications\Notifications\BackupHasFailedNotification::class => ['mail'],
+            Spatie\Backup\Notifications\Notifications\UnhealthyBackupWasFoundNotification::class => ['mail'],
+            Spatie\Backup\Notifications\Notifications\CleanupHasFailedNotification::class => ['mail'],
+            Spatie\Backup\Notifications\Notifications\BackupWasSuccessfulNotification::class => ['mail'],
+            Spatie\Backup\Notifications\Notifications\HealthyBackupWasFoundNotification::class => ['mail'],
+            Spatie\Backup\Notifications\Notifications\CleanupWasSuccessfulNotification::class => ['mail'],
         ],
 
         /*
          * Here you can specify the notifiable to which the notifications should be sent. The default
          * notifiable will use the variables specified in this config file.
          */
-        'notifiable' => \Spatie\Backup\Notifications\Notifiable::class,
+        'notifiable' => Spatie\Backup\Notifications\Notifiable::class,
 
         'mail' => [
             'to' => env('BACKUP_MAIL_TO', 'infra@laravel.app'),
@@ -217,28 +198,21 @@ return [
         'slack' => [
             'webhook_url' => '',
 
-            /*
-             * If this is set to null the default channel of the webhook will be used.
-             */
+            // If this is set to null the default channel of the webhook will be used.
             'channel' => null,
 
             'username' => null,
 
             'icon' => null,
-
         ],
 
         'discord' => [
             'webhook_url' => '',
 
-            /*
-             * If this is an empty string, the name field on the webhook will be used.
-             */
+            // If this is an empty string, the name field on the webhook will be used.
             'username' => '',
 
-            /*
-             * If this is an empty string, the avatar on the webhook will be used.
-             */
+            // If this is an empty string, the avatar on the webhook will be used.
             'avatar_url' => '',
         ],
     ],
@@ -253,8 +227,8 @@ return [
             'name' => env('APP_NAME', 'laravel-backup'),
             'disks' => ['local'],
             'health_checks' => [
-                \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays::class => 1,
-                \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => 5000,
+                Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays::class => 1,
+                Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => 5000,
             ],
         ],
 
@@ -280,13 +254,10 @@ return [
          * No matter how you configure it the default strategy will never
          * delete the newest backup.
          */
-        'strategy' => \Spatie\Backup\Tasks\Cleanup\Strategies\DefaultStrategy::class,
+        'strategy' => Spatie\Backup\Tasks\Cleanup\Strategies\DefaultStrategy::class,
 
         'default_strategy' => [
-
-            /*
-             * The number of days for which backups must be kept.
-             */
+            // The number of days for which backups must be kept.
             'keep_all_backups_for_days' => 7,
 
             /*
@@ -333,5 +304,4 @@ return [
          */
         'retry_delay' => 0,
     ],
-
 ];
