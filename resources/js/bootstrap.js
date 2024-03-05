@@ -4,7 +4,7 @@
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-import * as Sentry from "@sentry/browser";
+import * as Sentry from '@sentry/browser';
 import axios from 'axios';
 window.axios = axios;
 
