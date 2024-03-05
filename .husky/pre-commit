@@ -1,1 +1,2 @@
 docker exec laravel-app vendor/bin/pint
+docker exec laravel-app npm run prettier
