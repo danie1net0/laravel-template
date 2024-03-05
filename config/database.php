@@ -41,6 +41,14 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
+        'pulse' => [
+            'driver' => 'sqlite',
+            'url' => '',
+            'database' => database_path('sqlite/pulse.sqlite'),
+            'prefix' => '',
+            'foreign_key_constraints' => true,
+        ],
+
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
