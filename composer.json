@@ -16,6 +16,7 @@
     "laravel/pulse": "^1.0@beta",
     "laravel/sanctum": "^3.3",
     "laravel/tinker": "^2.8",
+    "opcodesio/log-viewer": "^3.5",
     "sentry/sentry-laravel": "^4.2",
     "spatie/laravel-backup": "^8.6"
   },
