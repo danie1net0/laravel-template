@@ -65,6 +65,8 @@ services:
     image: postgres:15
     container_name: laravel-pgsql
     platform: linux/amd64
+    env_file:
+      - .env
     ports:
       - '${FORWARD_DB_PORT:-5432}:5432'
     environment:
