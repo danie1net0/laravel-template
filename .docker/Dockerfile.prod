@@ -8,7 +8,7 @@ ENV PATH="./vendor/bin:${PATH}" \
 
 RUN apt update \
     && apt -y --no-install-recommends install \
-        libpq-dev libzip-dev libpng-dev \
+        libpq-dev libzip-dev libpng-dev libicu-dev \
         procps \
         unzip \
         supervisor \
@@ -17,7 +17,7 @@ RUN apt update \
         postgresql-client \
     && pecl install redis \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-    && docker-php-ext-install sockets pdo pdo_pgsql opcache gd zip exif pcntl \
+    && docker-php-ext-install sockets pdo pdo_pgsql opcache gd zip exif pcntl intl \
     && docker-php-ext-enable redis
 
 COPY .docker/php/php-fpm.d/docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf

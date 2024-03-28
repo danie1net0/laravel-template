@@ -6,7 +6,7 @@ ENV PATH="./vendor/bin:${PATH}" \
 RUN apt update \
     && apt -y --no-install-recommends install \
         build-essential \
-        libpq-dev libzip-dev libpng-dev libjpeg62-turbo-dev \
+        libpq-dev libzip-dev libpng-dev libjpeg62-turbo-dev libicu-dev \
         unzip \
         procps \
         supervisor \
@@ -17,7 +17,7 @@ RUN apt update \
     && pecl install redis \
     && docker-php-ext-configure gd --with-jpeg=/usr/include \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-    && docker-php-ext-install sockets pdo pdo_pgsql gd zip exif pcntl \
+    && docker-php-ext-install sockets pdo pdo_pgsql gd zip exif pcntl intl \
     && docker-php-ext-enable redis
 
 RUN npm update -g npm
