@@ -33,3 +33,21 @@ test('deve transformar as permissions numa coleção', function (): void {
 
     expect($user->permissions)->toBeInstanceOf(Collection::class);
 });
+
+test('deve retornar true quando o usuário tiver qualquer uma das roles especificadas', function (): void {
+    $user = new User(['roles' => [Role::USER]]);
+
+    expect($user->hasAnyRole(Role::USER))->toBeTrue();
+});
+
+test('deve retornar false quando o usuário não tiver nenhuma das roles especificadas', function (): void {
+    $user = new User(['roles' => [Role::USER]]);
+
+    expect($user->hasAnyRole(Role::ADMIN, Role::SUPER_ADMIN))->toBeFalse();
+});
+
+test('deve retornar true quando o usuário tiver mais de uma role simultaneamente', function (): void {
+    $user = new User(['roles' => [Role::USER, Role::ADMIN]]);
+
+    expect($user->hasAnyRole(Role::USER, Role::ADMIN))->toBeTrue();
+});

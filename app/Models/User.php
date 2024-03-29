@@ -3,8 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Role;
-use Illuminate\Database\Eloquent\Casts\AsCollection;
-use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
+use Illuminate\Database\Eloquent\Casts\{AsCollection, AsEnumCollection};
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -22,6 +21,14 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function hasAnyRole(Role ...$roles): bool
+    {
+        return $this->roles
+            ->map(fn (Role $role): string => $role->value)
+            ->intersect(collect($roles)->map(fn (Role $role): string => $role->value))
+            ->isNotEmpty();
+    }
 
     protected function casts(): array
     {
