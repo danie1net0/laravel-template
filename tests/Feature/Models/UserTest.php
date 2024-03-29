@@ -51,3 +51,26 @@ test('deve retornar true quando o usuário tiver mais de uma role simultaneament
 
     expect($user->hasAnyRole(Role::USER, Role::ADMIN))->toBeTrue();
 });
+test('deve retornar true quando o usuário tiver qualquer uma das permissions especificadas', function (): void {
+    $user = new User(['permissions' => ['foo']]);
+
+    expect($user->hasAnyPermission('foo'))->toBeTrue();
+});
+
+test('deve retornar true quando o usuário não tiver nenhuma das permissions especificadas', function (): void {
+    $user = new User(['permissions' => ['foo']]);
+
+    expect($user->hasAnyPermission('bar', 'baz'))->toBeFalse();
+});
+
+test('deve retornar true quando o usuário tiver mais de uma permission simultaneamente', function (): void {
+    $user = new User(['permissions' => ['foo', 'baz']]);
+
+    expect($user->hasAnyPermission('foo', 'baz'))->toBeTrue();
+});
+
+test('deve retornar false quando o usuário não tiver nenhuma permissão', function (): void {
+    $user = new User(['permissions' => []]);
+
+    expect($user->hasAnyPermission('foo', 'bar', 'baz'))->toBeFalse();
+});

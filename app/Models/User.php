@@ -30,6 +30,11 @@ class User extends Authenticatable
             ->isNotEmpty();
     }
 
+    public function hasAnyPermission(string ...$permissions): bool
+    {
+        return $this->permissions->intersect(collect($permissions))->isNotEmpty();
+    }
+
     protected function casts(): array
     {
         return [
