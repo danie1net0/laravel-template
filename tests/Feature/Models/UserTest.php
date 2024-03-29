@@ -4,8 +4,7 @@ namespace Tests\Models;
 
 use App\Enums\Role;
 use App\Models\User;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Collection;
+use Illuminate\Support\{Carbon, Collection};
 use Illuminate\Support\Facades\Hash;
 
 uses()->group('models');
@@ -27,4 +26,10 @@ test('deve transformar as roles numa coleção do enum Role', function (): void 
 
     expect($user->roles)->toBeInstanceOf(Collection::class)
         ->and($user->roles->first())->toBeInstanceOf(Role::class);
+});
+
+test('deve transformar as permissions numa coleção', function (): void {
+    $user = new User(['permissions' => ['foo', 'bar']]);
+
+    expect($user->permissions)->toBeInstanceOf(Collection::class);
 });
