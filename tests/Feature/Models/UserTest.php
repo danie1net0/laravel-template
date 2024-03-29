@@ -2,8 +2,10 @@
 
 namespace Tests\Models;
 
+use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 
 uses()->group('models');
@@ -18,4 +20,11 @@ test('deve fazer hash da senha', function (): void {
     $user = new User(['password' => 'password']);
 
     expect(Hash::check('password', $user->password))->toBeTrue();
+});
+
+test('deve transformar as roles numa coleção do enum Role', function (): void {
+    $user = new User(['roles' => [Role::USER]]);
+
+    expect($user->roles)->toBeInstanceOf(Collection::class)
+        ->and($user->roles->first())->toBeInstanceOf(Role::class);
 });
