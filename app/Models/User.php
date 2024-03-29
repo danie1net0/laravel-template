@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\Role;
+use Illuminate\Database\Eloquent\Casts\{AsCollection, AsEnumCollection};
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -14,34 +15,33 @@ class User extends Authenticatable
     use HasFactory;
     use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $guarded = [];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+    public function hasAnyRole(Role ...$roles): bool
+    {
+        return $this->roles
+            ->map(fn (Role $role): string => $role->value)
+            ->intersect(collect($roles)->map(fn (Role $role): string => $role->value))
+            ->isNotEmpty();
+    }
+
+    public function hasAnyPermission(string ...$permissions): bool
+    {
+        return $this->permissions->intersect(collect($permissions))->isNotEmpty();
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'roles' => AsEnumCollection::of(Role::class),
+            'permissions' => AsCollection::class,
+        ];
+    }
 }
