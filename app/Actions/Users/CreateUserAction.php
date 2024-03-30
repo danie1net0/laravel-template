@@ -12,7 +12,7 @@ class CreateUserAction
         User::create([
             'name' => $input['name'],
             'email' => $input['email'],
-            'password' => $input['password'],
+            'password' => $input['password'] ?? null,
             'roles' => $input['roles'] ?? [Role::USER],
             'email_verified_at' => now(),
         ]);
