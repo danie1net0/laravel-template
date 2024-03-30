@@ -86,10 +86,10 @@ services:
     ports:
       - '${DB_TEST_PORT:-5433}:5432'
     environment:
-      PGPASSWORD: 'laravel_templates_tests'
-      POSTGRES_DB: 'laravel_templates_tests'
-      POSTGRES_USER: 'laravel_templates_tests'
-      POSTGRES_PASSWORD: 'laravel_templates_tests'
+      PGPASSWORD: 'pgsql_tests'
+      POSTGRES_DB: 'pgsql_tests'
+      POSTGRES_USER: 'pgsql_tests'
+      POSTGRES_PASSWORD: 'pgsql_tests'
     volumes:
       - 'pgsql_tests:/var/lib/postgresql/data'
     networks:
