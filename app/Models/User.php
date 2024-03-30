@@ -44,4 +44,13 @@ class User extends Authenticatable
             'permissions' => AsCollection::class,
         ];
     }
+
+    protected static function booted(): void
+    {
+        static::creating(function (User $user): void {
+            if (! $user->roles) {
+                $user->roles = [Role::USER];
+            }
+        });
+    }
 }
