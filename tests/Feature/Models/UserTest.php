@@ -74,3 +74,15 @@ test('deve retornar false quando o usuário não tiver nenhuma permissão', func
 
     expect($user->hasAnyPermission('foo', 'bar', 'baz'))->toBeFalse();
 });
+
+test('deve atributo a role \'User\' ao criar usuário caso nenhuma outra tenha sido atribuída', function (): void {
+    $user = User::factory()->create();
+
+    expect($user->roles)->toEqual(collect([Role::USER]));
+
+    $user = User::factory()
+        ->set('roles', [Role::ADMIN])
+        ->create();
+
+    expect($user->roles)->toEqual(collect([Role::ADMIN]));
+});
