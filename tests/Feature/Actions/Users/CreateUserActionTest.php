@@ -33,13 +33,20 @@ it('deve criar usuário', function (): void {
 });
 
 it('deve atributir a role \'USER\' por padrão', function (): void {
-    $input = User::factory()
-        ->make()
-        ->toArray();
+    $input = User::factory()->make();
 
-    $input['password'] = 'password';
-
-    (new CreateUserAction())->execute($input);
+    (new CreateUserAction())->execute($input->toArray());
 
     expect(User::first()->roles)->toEqual(collect([Role::USER]));
+});
+
+it('deve criar usuário sem senha', function (): void {
+    $input = User::factory()->make();
+
+    (new CreateUserAction())->execute($input->toArray());
+
+    assertDatabaseHas(User::class, [
+        'id' => User::first()->id,
+        'password' => null,
+    ]);
 });
