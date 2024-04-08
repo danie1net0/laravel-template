@@ -2,8 +2,12 @@
 
 namespace App\Enums\AccessControl;
 
-enum Role: string
+use App\Enums\{BaseEnum, EnumContract};
+
+enum Role: string implements EnumContract
 {
+    use BaseEnum;
+
     case SUPER_ADMIN = 'super-admin';
     case ADMIN = 'admin';
     case USER = 'user';
