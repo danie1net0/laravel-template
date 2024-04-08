@@ -15,6 +15,7 @@ class CreateUserAction
             'password' => $input['password'] ?? null,
             'roles' => $input['roles'] ?? [Role::USER],
             'email_verified_at' => now(),
+            'is_active' => $input['is_active'] ?? true,
         ]);
     }
 }

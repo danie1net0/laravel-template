@@ -27,15 +27,26 @@ it('deve criar usuário', function (): void {
         'name' => $input['name'],
         'email' => $input['email'],
         'email_verified_at' => now(),
+        'is_active' => $input['is_active'],
     ]);
 });
 
 it('deve atributir a role \'USER\' por padrão', function (): void {
     $input = User::factory()->make();
 
-    (new CreateUserAction())->execute($input->toArray());
+    $user = (new CreateUserAction())->execute($input->toArray());
 
-    expect(User::first()->roles)->toEqual(collect([Role::USER]));
+    expect($user->roles)->toEqual(collect([Role::USER]));
+});
+
+it('deve criar usuário ativo por padrão', function (): void {
+    $input = User::factory()->make();
+
+    unset($input['is_active']);
+
+    $user = (new CreateUserAction())->execute($input->toArray());
+
+    expect($user->is_active)->toBeTrue();
 });
 
 it('deve criar usuário sem senha', function (): void {
