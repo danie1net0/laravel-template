@@ -1,7 +1,7 @@
 <?php
 
 use App\Actions\Users\UpdateUserAction;
-use App\Enums\Role;
+use App\Enums\AccessControl\Role;
 use App\Models\User;
 
 use function Pest\Laravel\assertDatabaseHas;

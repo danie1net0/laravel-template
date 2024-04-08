@@ -1,6 +1,6 @@
 <?php
 
-use App\Enums\Role;
+use App\Enums\AccessControl\Role;
 
 uses()->group('enums');
 

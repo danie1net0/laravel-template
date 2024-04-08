@@ -2,7 +2,7 @@
 
 namespace Tests\Models;
 
-use App\Enums\Role;
+use App\Enums\AccessControl\Role;
 use App\Models\User;
 use Illuminate\Support\{Carbon, Collection};
 use Illuminate\Support\Facades\Hash;

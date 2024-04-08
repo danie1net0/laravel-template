@@ -2,7 +2,7 @@
 
 namespace App\Actions\Users;
 
-use App\Enums\Role;
+use App\Enums\AccessControl\Role;
 use App\Models\User;
 
 class CreateUserAction

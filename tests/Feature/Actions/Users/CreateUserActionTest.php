@@ -1,7 +1,7 @@
 <?php
 
 use App\Actions\Users\CreateUserAction;
-use App\Enums\Role;
+use App\Enums\AccessControl\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
