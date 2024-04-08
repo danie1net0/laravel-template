@@ -7,8 +7,13 @@ use Illuminate\Database\Eloquent\Casts\{AsCollection, AsEnumCollection};
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @property Collection<int, Role> $roles
+ * @property Collection<int, string> $permissions
+ */
 class User extends Authenticatable
 {
     use HasApiTokens;
@@ -48,8 +53,8 @@ class User extends Authenticatable
     protected static function booted(): void
     {
         static::creating(function (User $user): void {
-            if (! $user->roles) {
-                $user->roles = [Role::USER];
+            if ($user->roles?->isEmpty()) {
+                $user->roles = collect([Role::USER]);
             }
         });
     }
