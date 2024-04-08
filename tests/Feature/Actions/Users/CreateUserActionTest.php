@@ -17,9 +17,7 @@ it('deve criar usuário', function (): void {
 
     $input['password'] = 'password';
 
-    (new CreateUserAction())->execute($input);
-
-    $user = User::first();
+    $user = (new CreateUserAction())->execute($input);
 
     expect(Hash::check('password', $user->password))->toBeTrue()
         ->and($user->roles)->toEqual(collect($roles));

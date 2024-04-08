@@ -7,9 +7,9 @@ use App\Models\User;
 
 class CreateUserAction
 {
-    public function execute(array $input): void
+    public function execute(array $input): User
     {
-        User::create([
+        return User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => $input['password'] ?? null,
