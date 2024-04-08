@@ -32,7 +32,9 @@ it('deve criar usuário', function (): void {
 });
 
 it('deve atributir a role \'USER\' por padrão', function (): void {
-    $input = User::factory()->make();
+    $input = User::factory()
+        ->set('roles', null)
+        ->make();
 
     $user = (new CreateUserAction())->execute($input->toArray());
 
