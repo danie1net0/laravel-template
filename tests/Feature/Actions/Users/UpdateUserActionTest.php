@@ -40,7 +40,7 @@ it('deve editar usuário sem todos parâmetro', function (string $param): void {
 
     unset($input[$param]);
 
-    (new UpdateUserAction())->execute($user, $input->toArray());
+    $user = (new UpdateUserAction())->execute($user, $input->toArray());
 
-    expect($user->fresh()->{$param})->toEqual($originalValue);
+    expect($user->{$param})->toEqual($originalValue);
 })->with(['name', 'email', 'roles', 'is_active']);
