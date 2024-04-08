@@ -76,7 +76,9 @@ test('deve retornar false quando o usuário não tiver nenhuma permissão', func
 });
 
 test('deve atributo a role \'User\' ao criar usuário caso nenhuma outra tenha sido atribuída', function (): void {
-    $user = User::factory()->create();
+    $user = User::factory()
+        ->set('roles', null)
+        ->create();
 
     expect($user->roles)->toEqual(collect([Role::USER]));
 
