@@ -53,7 +53,7 @@ class User extends Authenticatable
     protected static function booted(): void
     {
         static::creating(function (User $user): void {
-            if ($user->roles?->isEmpty()) {
+            if ($user->roles->isEmpty()) {
                 $user->roles = collect([Role::USER]);
             }
         });
